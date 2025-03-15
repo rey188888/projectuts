@@ -1,0 +1,126 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema perizinan
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema perizinan
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `perizinan` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `perizinan` ;
+
+-- -----------------------------------------------------
+-- Table `perizinan`.`programstudi`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `perizinan`.`programstudi` (
+  `id_prodi` INT NOT NULL AUTO_INCREMENT,
+  `nama_prodi` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id_prodi`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `perizinan`.`mahasiswa`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `perizinan`.`mahasiswa` (
+  `nrp` VARCHAR(20) NOT NULL,
+  `nama` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  `id_prodi` INT NOT NULL,
+  `tanggal_kelulusan` DATE NULL DEFAULT NULL,
+  PRIMARY KEY (`nrp`),
+  INDEX `id_prodi` (`id_prodi` ASC) VISIBLE,
+  CONSTRAINT `mahasiswa_ibfk_1`
+    FOREIGN KEY (`id_prodi`)
+    REFERENCES `perizinan`.`programstudi` (`id_prodi`)
+    ON DELETE RESTRICT)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `perizinan`.`detail_surat`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `perizinan`.`detail_surat` (
+  `id_surat` INT NOT NULL AUTO_INCREMENT,
+  `nrp` VARCHAR(20) NOT NULL,
+  `nama` VARCHAR(100),
+  `kategori_surat` INT,
+  `tanggal_surat` DATE,
+  `semester` INT,
+  `tujuan_surat` VARCHAR(100),
+  `alamat_mhs` VARCHAR(300),
+  `alamat_surat` VARCHAR(300),
+  `topik` VARCHAR(100),
+  `nama_kode_matkul` VARCHAR(50),
+  PRIMARY KEY (`id_surat`),
+  INDEX `nrp` (`nrp` ASC) VISIBLE,
+  CONSTRAINT `detail_surat_ibfk_1`
+    FOREIGN KEY (`nrp`)
+    REFERENCES `perizinan`.`mahasiswa` (`nrp`)
+    ON DELETE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `perizinan`.`pengajuansurat`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `perizinan`.`pengajuansurat` (
+  `id_log` INT NOT NULL AUTO_INCREMENT,
+  `status_lama` ENUM('Pending', 'Diproses', 'Disetujui', 'Ditolak') NOT NULL,
+  `status_baru` ENUM('Pending', 'Diproses', 'Disetujui', 'Ditolak') NOT NULL,
+  `tanggal_perubahan` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `keterangan_penolakan` TEXT NULL DEFAULT NULL,
+  `id_surat` INT NOT NULL,
+  `nrp` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`id_log`),
+  INDEX `id_surat` (`id_surat` ASC) VISIBLE,
+  INDEX `nrp` (`nrp` ASC) VISIBLE,
+  CONSTRAINT `pengajuansurat_ibfk_1`
+    FOREIGN KEY (`id_surat`)
+    REFERENCES `perizinan`.`detail_surat` (`id_surat`)
+    ON DELETE CASCADE,
+  CONSTRAINT `pengajuansurat_ibfk_2`
+    FOREIGN KEY (`nrp`)
+    REFERENCES `perizinan`.`mahasiswa` (`nrp`)
+    ON DELETE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `perizinan`.`user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `perizinan`.`user` (
+  `id_user` VARCHAR(20) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `role` VARCHAR(20) NOT NULL,
+  `nrp` VARCHAR(20) NULL,
+  PRIMARY KEY (`id_user`),
+  INDEX `nrp` (`nrp` ASC) VISIBLE,
+  CONSTRAINT `user_ibfk_1`
+    FOREIGN KEY (`nrp`)
+    REFERENCES `perizinan`.`mahasiswa` (`nrp`)
+    ON DELETE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
