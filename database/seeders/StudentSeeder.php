@@ -16,35 +16,35 @@ class StudentSeeder extends Seeder
      */
     public function run(): void
     {
-        // Prodi::create([
-        //     'id_prodi' => 1,
-        //     'nama_prodi' => 'Teknik Informatika',
-        // ]);
+        Prodi::create([
+            'id_prodi' => 1,
+            'nama_prodi' => 'Teknik Informatika',
+        ]);
 
-        // Prodi::create([
-        //     'id_prodi' => 2,
-        //     'nama_prodi' => 'Sistem Informasi',
-        // ]);
+        Prodi::create([
+            'id_prodi' => 2,
+            'nama_prodi' => 'Sistem Informasi',
+        ]);
 
-        // Prodi::create([
-        //     'id_prodi' => 3,
-        //     'nama_prodi' => 'S2 Ilmu Komputer',
-        // ]);
+        Prodi::create([
+            'id_prodi' => 3,
+            'nama_prodi' => 'S2 Ilmu Komputer',
+        ]);
 
-        // Mahasiswa::create([
-        //     'nrp' => '2372013',
-        //     'nama' => 'Rey',
-        //     'email' => 'rey@gmail.com',
-        //     'id_prodi' => 1,
-        //     'tanggal_kelulusan' => null,
-        // ]);
+        Mahasiswa::create([
+            'nrp' => '2372013',
+            'nama' => 'Rey',
+            'email' => 'rey@gmail.com',
+            'id_prodi' => 1,
+            'tanggal_kelulusan' => null,
+        ]);
 
-        // User::create([
-        //     'id_user' => 1001,
-        //     'password' => Hash::make('123456'),
-        //     'role' => 'student',
-        //     'nrp' => 2372013,
-        // ]);
+        User::create([
+            'id_user' => 1001,
+            'password' => Hash::make('123456'),
+            'role' => 'student',
+            'nrp' => 2372013,
+        ]);
 
         
     }

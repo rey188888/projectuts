@@ -14,11 +14,11 @@ class StaffSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::create([
-        //     'id_user' => 3001,
-        //     'password' => Hash::make('123456'),
-        //     'role' => 'staff',
-        //     'nrp' => null,
-        // ]);
+        User::create([
+            'id_user' => 3001,
+            'password' => Hash::make('123456'),
+            'role' => 'staff',
+            'nrp' => null,
+        ]);
     }
 }

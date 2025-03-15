@@ -16,6 +16,9 @@ class staff
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if (!Auth::check()) { // buat cek udh login atau belum
+            return redirect('/login');
+        }
         if (Auth::user()->role !== 'staff') {
             return redirect('/unauthenticated')->header('role', Auth::user()->role);
         } else {
