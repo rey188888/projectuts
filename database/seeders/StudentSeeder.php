@@ -21,15 +21,15 @@ class StudentSeeder extends Seeder
         //     'nama_prodi' => 'Teknik Informatika',
         // ]);
 
-        Prodi::create([
-            'id_prodi' => 2,
-            'nama_prodi' => 'Sistem Informasi',
-        ]);
+        // Prodi::create([
+        //     'id_prodi' => 2,
+        //     'nama_prodi' => 'Sistem Informasi',
+        // ]);
 
-        Prodi::create([
-            'id_prodi' => 3,
-            'nama_prodi' => 'S2 Ilmu Komputer',
-        ]);
+        // Prodi::create([
+        //     'id_prodi' => 3,
+        //     'nama_prodi' => 'S2 Ilmu Komputer',
+        // ]);
 
         // Mahasiswa::create([
         //     'nrp' => '2372013',
