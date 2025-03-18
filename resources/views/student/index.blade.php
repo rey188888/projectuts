@@ -11,7 +11,9 @@
 
 <body class="bg-gray-100 min-h-screen">
     <div class="flex min-h-screen bg-gray-100"> <!-- Main flex container -->
-        <x-sidebar></x-sidebar>
+        @include('components.sidebar')
+
+        @yield('content')
 
         <!-- Main Content -->
         <div class="flex-1 ml-64"> <!-- Offset for sidebar width -->
@@ -35,7 +37,8 @@
                                         class="w-32 h-64     object-contain">
                                 </div>
                                 <div class="p-6 text-center flex flex-col justify-center">
-                                    <h3 class="text-xl font-semibold text-gray-900">Surat Keterangan Mahasiswa Aktif</h3>
+                                    <h3 class="text-xl font-semibold text-gray-900">Surat Keterangan Mahasiswa Aktif
+                                    </h3>
                                 </div>
                             </a>
 
@@ -47,7 +50,8 @@
                                         class="w-32 h-64 object-contain">
                                 </div>
                                 <div class="p-6 text-center flex flex-col justify-center">
-                                    <h3 class="text-xl font-semibold text-gray-900">Surat Pengantar Tugas Mata Kuliah</h3>
+                                    <h3 class="text-xl font-semibold text-gray-900">Surat Pengantar Tugas Mata Kuliah
+                                    </h3>
                                 </div>
                             </a>
 

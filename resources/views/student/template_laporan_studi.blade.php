@@ -20,10 +20,12 @@
                         class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                         Isi Data Mahasiswa
                     </h1>
-                    <form class="space-y-4 md:space-y-6" action="#">
+                    <form class="space-y-4 md:space-y-6" action="{{ route('surat.storeSurat4') }}"
+                    method="POST">
+                    @csrf
                         <!-- Keperluan Pembuatan LHS -->
                         <div>
-                            <label for="purpose_lhs"
+                            <label for="purpose"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Keperluan
                                 Pembuatan LHS</label>
                             <input type="text" name="purpose_lhs" id="purpose_lhs" placeholder="Enter your purpose"

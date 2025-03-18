@@ -10,15 +10,16 @@ use App\Models\Mahasiswa;
 
 class MhsAktifController extends Controller
 {
-    public function storeSurat(Request $request)
+    public function storeSurat1(Request $request)
     {
+
         $request->validate([
             'semester' => 'required|integer',
             'address' => 'required|string',
             'purpose' => 'required|string',
         ]);
 
-        // Fetch the authenticated user's NRP using id_user
+        // Fetch the authenticated user's NRP and name
         $user = Auth::user();
         $nrp = User::where('id_user', $user->id_user)->value('nrp');
         $nama = Mahasiswa::where('nrp', $user->nrp)->value('nama');
@@ -27,11 +28,11 @@ class MhsAktifController extends Controller
         Surat::create([
             'nrp' => $nrp,
             'nama' => $nama,
-            'semester' => $request->semester,
-            'alamat_mhs' => $request->address,
-            'tujuan_surat' => $request->purpose,
-            'tanggal_surat' => now(), // Set to current date
             'kategori_surat' => 1,
+            'tanggal_surat' => now(), // Set to current date
+            'semester' => $request->semester,
+            'tujuan_surat' => $request->purpose,
+            'alamat_mhs' => $request->address,
             'alamat_surat' => null,   // Unwanted column
             'topik' => null,          // Unwanted column
             'nama_kode_matkul' => null, // Unwanted column
