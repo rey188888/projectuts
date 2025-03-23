@@ -54,12 +54,6 @@
                 </button>
             </div>
 
-            @if (Route::has('password.request'))
-                <div class="mt-4 text-center">
-                    <a href="{{ route('password.request') }}"
-                        class="text-sm text-indigo-600 hover:text-indigo-800">Forgot Your Password?</a>
-                </div>
-            @endif
         </form>
     </div>
 </body>

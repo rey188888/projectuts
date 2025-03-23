@@ -2,21 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Psy\Readline\Hoa\StreamBufferable;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
+    public function run()
     {
-        $this->call(AdminSeeder::class);
-        $this->call(StudentSeeder::class);
-        $this->call(StaffSeeder::class);
-        $this->call(KaprodiSeeder::class);
+        $this->call([
+            StudentSeeder::class,  // Creates ProgramStudi and User (id_user: 1001)
+            AdminSeeder::class,    // Creates User (id_user: 2001)
+            StaffSeeder::class,    // Creates User (id_user: 3001) and Staff
+            KaprodiSeeder::class,  // Creates User (id_user: 4001) and Kaprodi
+        ]);
     }
 }

@@ -4,32 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Mahasiswa extends Model
+class Staff extends Model
 {
     // Specify the table name
-    protected $table = 'mahasiswa';
+    protected $table = 'staff';
 
     // Specify the primary key
-    protected $primaryKey = 'nrp';
+    protected $primaryKey = 'id_staff';
 
     // Disable timestamps
     public $timestamps = false;
 
     // Define the fillable fields for mass assignment (exclude primary key)
     protected $fillable = [
-        'nrp',
+        'id_staff',
         'nama',
         'email',
-        'status_mhs',
-        'tanggal_kelulusan',
         'id_prodi',
         'id_user',
     ];
 
     // Define the data types for specific columns
     protected $casts = [
-        'status_mhs' => 'integer',
-        'tanggal_kelulusan' => 'date',
+        'id_staff' => 'integer',
         'id_prodi' => 'integer',
     ];
 

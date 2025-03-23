@@ -50,13 +50,13 @@ Route::get('/student/template_laporan_studi', function () {
     return view('/student/template_laporan_studi');
 })->middleware(student::class);
 
-Route::post('/surat/store/template_mhs_aktif', [MhsAktifController::class, 'storeSurat1'])->name('surat.storeSurat1');
+Route::post('/surat/store/template_mhs_aktif', [MhsAktifController::class, 'storeSurat1'])->name('detailsurat.storeSurat1');
 
-Route::post('/surat/store/template_pengantar_tugasmk', [PengantarTugasMKController::class, 'storeSurat2'])->name('surat.storeSurat2');
+Route::post('/surat/store/template_pengantar_tugasmk', [PengantarTugasMKController::class, 'storeSurat2'])->name('detailsurat.storeSurat2');
 
-Route::post('/surat/store/template_ket_lulus', [KeteranganLulusController::class, 'storeSurat3'])->name('surat.storeSurat3');
+Route::post('/surat/store/template_ket_lulus', [KeteranganLulusController::class, 'storeSurat3'])->name('detailsurat.storeSurat3');
 
-Route::post('/surat/store/template_laporan_studi', [LaporanStudiController::class, 'storeSurat4'])->name('surat.storeSurat4');
+Route::post('/surat/store/template_laporan_studi', [LaporanStudiController::class, 'storeSurat4'])->name('detailsurat.storeSurat4');
 
 
 Route::get('/student/status', function () {
@@ -66,6 +66,10 @@ Route::get('/student/status', function () {
 Route::get('/staff', function () {
     return view('/staff/index');
 })->middleware(staff::class);
+
+Route::get('/staff/print_surat', function () {
+    return view('/staff/print_surat');
+});
 
 Route::get('/kaprodi', function () {
     return view('/kaprodi/index');

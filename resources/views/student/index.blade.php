@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('components.layout')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Home</title>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    @vite('resources/css/app.css')
-</head>
+@section('title')
+    Home
+@endsection
 
+@section('content')
 <body class="bg-gray-100 min-h-screen">
     <div class="flex min-h-screen bg-gray-100"> <!-- Main flex container -->
         @include('components.sidebar')

@@ -12,21 +12,23 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    // Specify the table name
+    protected $table = 'user';
+
+    // Specify the primary key
+    protected $primaryKey = 'id_user';
+
+    // Disable timestamps
+    public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-
-    protected $table = 'user';
-
-    protected $primaryKey = 'id_user';
-
     protected $fillable = [
-        'id_user',
         'password',
         'role',
-        'nrp',
     ];
 
     /**
@@ -36,7 +38,6 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -47,10 +48,18 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
 
-    public $timestamps = false;
+    // Define relationships
+    public function kaprodi()
+    {
+        return $this->hasOne(Kaprodi::class, 'id_user', 'id_user');
+    }
+
+    public function mahasiswa()
+    {
+        return $this->hasOne(Mahasiswa::class, 'id_user', 'id_user');
+    }
 }

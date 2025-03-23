@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -14,11 +13,13 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'id_user' => 2001,
-            'password' => Hash::make('123456'),
-            'role' => 'admin',
-            'nrp' => null,
-        ]);
+        // Use firstOrCreate to avoid duplicate user
+        User::firstOrCreate(
+            ['id_user' => 2001], // Check if this id_user exists
+            [
+                'password' => Hash::make('123456'),
+                'role' => 'admin',
+            ]
+        );
     }
 }
