@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Surat;
 
 use App\Models\DetailSurat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Mahasiswa;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\PengajuanSurat;
 
 class MhsAktifController extends Controller
 {
@@ -45,7 +48,27 @@ class MhsAktifController extends Controller
 
         // Create a new letter entry
         try {
+            // Find the highest existing number for the SKMA format
+            $highestNumber = 0;
+            $latestSurat = DB::table('detail_surat')
+                ->where('id_surat', 'LIKE', '%/SKMA')
+                ->orderByRaw('CAST(SUBSTRING_INDEX(id_surat, \'/\', 1) AS UNSIGNED) DESC')
+                ->first();
+
+            if ($latestSurat) {
+                $parts = explode('/', $latestSurat->id_surat);
+                if (isset($parts[0]) && is_numeric($parts[0])) {
+                    $highestNumber = (int)$parts[0];
+                }
+            }
+
+            // Generate the next ID
+            $nextNumber = $highestNumber + 1;
+            $formattedIdSurat = sprintf("%03d/SKMA", $nextNumber);
+
+            // Create the DetailSurat record with the auto-numbered ID
             DetailSurat::create([
+                'id_surat' => $formattedIdSurat,
                 'nama' => $nama,
                 'kategori_surat' => 1,
                 'tanggal_surat' => now(),
@@ -57,7 +80,18 @@ class MhsAktifController extends Controller
                 'nama_kode_matkul' => null,
             ]);
 
-            return redirect()->back()->with('success', 'Letter data submitted successfully!');
+            PengajuanSurat::create([
+                'status_surat' => 0,
+                'tanggal_perubahan' => now(),
+                'keterangan_penolakan' => null,
+                'nrp' => $mahasiswa->nrp,
+                'id_surat' => $formattedIdSurat,
+                'id_user' => $user->id_user,
+                'id_staff' => null,
+                'id_kaprodi' => null,
+            ]);
+
+            return redirect()->back()->with('success', 'Surat berhasil diajukan dengan nomor: ' . $formattedIdSurat);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to submit letter data: ' . $e->getMessage());
         }

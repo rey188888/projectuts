@@ -8,7 +8,8 @@
     <section class="bg-white flex flex-col md:flex-row h-[100vh] ml-64">
         <!-- Form Section -->
         <div class="basis-1/2 p-10 flex items-center justify-center bg-red-500">
-            <div class="w-full h-fit rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div
+                class="w-full h-fit rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                 <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                     <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                         Isi Data Mahasiswa
@@ -17,7 +18,9 @@
                         @csrf
                         <!-- Tanggal Kelulusan -->
                         <div>
-                            <label for="graduation_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Kelulusan</label>
+                            <label for="graduation_date"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal
+                                Kelulusan</label>
                             <input type="date" name="graduation_date" id="graduation_date"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 value="{{ old('graduation_date') }}" required>

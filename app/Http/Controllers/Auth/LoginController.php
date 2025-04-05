@@ -37,16 +37,16 @@ bat    | This controller handles authenticating users for the application and
         if (Auth::attempt(['id_user' => $credentials['id_user'], 'password' => $credentials['password']])) {
             // Authentication successful, redirect based on role
             if (Auth::user()->role == 'admin') {
-                return redirect('/admin');
+                return redirect('/admin/dashboard');
             }
             else if (Auth::user()->role == 'student') {
-                return redirect('/student');
+                return redirect('/student/pengajuan');
             }
             else if (Auth::user()->role == 'staff') {
-                return redirect('/staff');
+                return redirect('/staff/print_surat');
             }
             else if (Auth::user()->role == 'kaprodi') {
-                return redirect('/kaprodi');
+                return redirect('/kaprodi/daftarsurat');
             }
         }
 

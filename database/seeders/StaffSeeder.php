@@ -18,24 +18,24 @@ class StaffSeeder extends Seeder
     {
         // Ensure ProgramStudi record exists (optional if already created in another seeder)
         ProgramStudi::firstOrCreate(
-            ['id_prodi' => 1],
+            ['id_prodi' => '1'],
             ['nama_prodi' => 'Teknik Informatika']
         );
 
         // Create User record first (since Staff depends on it)
         User::create([
-            'id_user' => 3001,
+            'id_user' => '3001',
             'password' => Hash::make('123456'),
-            'role' => 'admin',
+            'role' => 'staff',
         ]);
 
         // Now create Staff record (after User is created)
         Staff::create([
-            'id_staff' => '01', // Use string if id_staff is VARCHAR
+            'id_staff' => 'S001', // Use string if id_staff is VARCHAR
             'nama' => 'Joko',
             'email' => 'joko@gmail.com',
-            'id_prodi' => 1,
-            'id_user' => 3001,
+            'id_prodi' => '1',
+            'id_user' => '3001',
         ]);
     }
 }

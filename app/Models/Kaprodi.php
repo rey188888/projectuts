@@ -26,7 +26,7 @@ class Kaprodi extends Model
 
     // Define the data types for specific columns
     protected $casts = [
-        'id_prodi' => 'integer',
+        'id_prodi' => 'string',
     ];
 
     // Define relationships

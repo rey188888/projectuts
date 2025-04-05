@@ -17,24 +17,24 @@ class StudentSeeder extends Seeder
     public function run(): void
     {
         // Create ProgramStudi (Prodi) records first
-        // ProgramStudi::create([
-        //     'id_prodi' => 1,
-        //     'nama_prodi' => 'Teknik Informatika',
-        // ]);
+        ProgramStudi::create([
+            'id_prodi' => '1',
+            'nama_prodi' => 'Teknik Informatika',
+        ]);
 
-        // ProgramStudi::create([
-        //     'id_prodi' => 2,
-        //     'nama_prodi' => 'Sistem Informasi',
-        // ]);
+        ProgramStudi::create([
+            'id_prodi' => '2',
+            'nama_prodi' => 'Sistem Informasi',
+        ]);
 
-        // ProgramStudi::create([
-        //     'id_prodi' => 3,
-        //     'nama_prodi' => 'S2 Ilmu Komputer',
-        // ]);
+        ProgramStudi::create([
+            'id_prodi' => '3',
+            'nama_prodi' => 'S2 Ilmu Komputer',
+        ]);
 
         // Create User record first (since Mahasiswa depends on it)
         User::create([
-            'id_user' => 1001,
+            'id_user' => '1001',
             'password' => Hash::make('123456'),
             'role' => 'student',
         ]);
@@ -45,9 +45,9 @@ class StudentSeeder extends Seeder
             'nama' => 'Rey',
             'email' => 'rey@gmail.com',
             'status_mhs' => 1, // No quotes needed since status_mhs is an integer
-            'id_prodi' => 1,
+            'id_prodi' => '1',
             'tanggal_kelulusan' => null,
-            'id_user' => 1001,
+            'id_user' => '1001',
         ]);
     }
 }

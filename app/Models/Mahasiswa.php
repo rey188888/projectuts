@@ -30,7 +30,7 @@ class Mahasiswa extends Model
     protected $casts = [
         'status_mhs' => 'integer',
         'tanggal_kelulusan' => 'date',
-        'id_prodi' => 'integer',
+        'id_prodi' => 'string',
     ];
 
     // Define relationships

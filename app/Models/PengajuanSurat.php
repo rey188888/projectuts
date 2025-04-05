@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PengajuanSurat extends Model
 {
     // Specify the table name (optional if the table name matches the model name in lowercase with 's')
-    protected $table = 'pengajuan_surat';
+    protected $table = 'pengajuansurat';
 
     // Specify the primary key (optional if the primary key is 'id')
     protected $primaryKey = 'id_log';
@@ -30,8 +30,8 @@ class PengajuanSurat extends Model
     protected $casts = [
         'status_surat' => 'integer',
         'tanggal_perubahan' => 'datetime',
-        'id_surat' => 'integer',
-        'id_staff' => 'integer',
+        'id_surat' => 'string',
+        'id_staff' => 'string',
     ];
 
     // Define relationships

@@ -26,8 +26,8 @@ class Staff extends Model
 
     // Define the data types for specific columns
     protected $casts = [
-        'id_staff' => 'integer',
-        'id_prodi' => 'integer',
+        'id_staff' => 'string',
+        'id_prodi' => 'string',
     ];
 
     // Define relationships

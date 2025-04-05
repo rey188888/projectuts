@@ -1,25 +1,30 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('components.layout')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Home</title>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    @vite('resources/css/app.css')
-</head>
+@section('title')
+    Home
+@endsection
 
+@section('content')
 <body class="bg-gray-100 min-h-screen">
-    <div class="container mx-auto p-6">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Welcome, {{ auth()->user()->role }}!</h1>
-            <x-logout-button />
-        </div>
+    <div class="flex min-h-screen bg-gray-100"> <!-- Main flex container -->
+        @include('components.sidebar')
 
-        <div class="bg-white p-6 rounded-lg shadow-lg">
-            <p>This is your dashboard.</p>
-        </div>
+        @yield('content')
 
+        <!-- Main Content -->
+        <div class="flex-1 ml-64"> <!-- Offset for sidebar width -->
+            <div class="container mx-auto p-6">
+                <!-- Welcome Container -->
+                <div class="flex justify-between items-center mb-6 bg-white p-4 rounded-lg shadow-md">
+                    <h1 class="text-2xl font-bold text-gray-800">Welcome, {{ auth()->user()->role }}!</h1>
+                    <!-- Logout button removed from here -->
+                </div>
+
+                <!-- Additional content -->
+                
+                
+            </div>
+        </div>
     </div>
 </body>
 

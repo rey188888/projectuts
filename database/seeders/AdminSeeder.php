@@ -15,7 +15,7 @@ class AdminSeeder extends Seeder
     {
         // Use firstOrCreate to avoid duplicate user
         User::firstOrCreate(
-            ['id_user' => 2001], // Check if this id_user exists
+            ['id_user' => '2001'], // Check if this id_user exists
             [
                 'password' => Hash::make('123456'),
                 'role' => 'admin',

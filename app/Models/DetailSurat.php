@@ -17,6 +17,7 @@ class DetailSurat extends Model
 
     // Define the fillable fields for mass assignment
     protected $fillable = [
+        'id_surat',
         'nama',
         'kategori_surat',
         'tanggal_surat',
