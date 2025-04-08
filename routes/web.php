@@ -1,10 +1,9 @@
 <?php
 
 use App\Http\Controllers\Surat\KeteranganLulusController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Surat\LaporanStudiController;
-use App\Http\Controllers\Surat\MhsAktifController; // Ensure this controller exists in the specified namespace
+use App\Http\Controllers\Surat\MhsAktifController;
 use App\Http\Controllers\Surat\PengantarTugasMKController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\DashboardController;
@@ -15,7 +14,7 @@ use App\Http\Middleware\admin;
 use App\Http\Middleware\student;
 use App\Http\Middleware\staff;
 use App\Http\Middleware\kaprodi;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -28,16 +27,11 @@ Route::get('/unauthenticated', function () {
 // Login Routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
-
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Routes for admin
-Route::get('/admin/dashboard', function () {
-    return view('/admin/index');
-})->middleware(admin::class);
-
-// Routes for student
+// Routes for Student
 Route::prefix('student')->name('student.')->middleware(student::class)->group(function () {
+    Route::get('/status', [StatusController::class, 'index'])->name('student.status');
     Route::get('/status', [StatusController::class, 'index'])->name('student.status');
 
     Route::prefix('pengajuan')->name('pengajuan.')->group(function () {
@@ -62,19 +56,16 @@ Route::prefix('student')->name('student.')->middleware(student::class)->group(fu
 });
 
 Route::post('/surat/store/template_mhs_aktif', [MhsAktifController::class, 'storeSurat1'])->name('detailsurat.storeSurat1');
-
 Route::post('/surat/store/template_pengantar_tugasmk', [PengantarTugasMKController::class, 'storeSurat2'])->name('detailsurat.storeSurat2');
-
 Route::post('/surat/store/template_ket_lulus', [KeteranganLulusController::class, 'storeSurat3'])->name('detailsurat.storeSurat3');
-
 Route::post('/surat/store/template_laporan_studi', [LaporanStudiController::class, 'storeSurat4'])->name('detailsurat.storeSurat4');
 
+// Routes for Kaprodi
+// Route::get('/kaprodi/daftarsurat', [KaprodiController::class, 'index'])->middleware(kaprodi::class);
+Route::get('/kaprodi/daftarsurat', [KaprodiController::class, 'index'])->name('kaprodi.index')->middleware(kaprodi::class);
+Route::post('/kaprodi/update-status', [KaprodiController::class, 'updateStatus'])->name('kaprodi.updateStatus');
 
-// Route::get('/student/status', function () {
-//     return view('/student/status');
-// })->middleware(student::class);
-
-// Routes for staff
+// Routes for Staff
 Route::get('/staff/print_surat', function () {
     return view('/staff/index');
 })->middleware(staff::class);
@@ -83,11 +74,12 @@ Route::get('/staff/print_surat', function () {
     return view('/staff/print_surat');
 });
 
-// Route for kaprodi
-Route::get('/kaprodi/daftarsurat', [KaprodiController::class, 'index'])->middleware(kaprodi::class);
+// Routes for Admin
+Route::get('/admin/dashboard', function () {
+    return view('/admin/index');
+})->middleware(admin::class);
 
-Route::post('/kaprodi/update-status', [KaprodiController::class, 'updateStatus'])->name('kaprodi.updateStatus');
-
+// Commented Routes (kept as-is for reference)
 // Route::prefix('staff')->middleware([staff::class])->group(function () {
 //     Route::get('/', [PrintController::class, 'index'])->name('staff.print_surat');
 // });
