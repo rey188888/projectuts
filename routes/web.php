@@ -39,19 +39,19 @@ Route::prefix('student')->name('student.')->middleware(student::class)->group(fu
 
         Route::get('/template_mhs_aktif', function () {
             return view('student.template_mhs_aktif');
-        })->middleware('student');
+        })->middleware(student::class);
 
         Route::get('/template_pengantar_tugasmk', function () {
             return view('student.template_pengantar_tugasmk');
-        })->middleware('student');
+        })->middleware(student::class);
 
         Route::get('/template_ket_lulus', function () {
             return view('student.template_ket_lulus');
-        })->middleware('student');
+        })->middleware(student::class);
 
         Route::get('/template_laporan_studi', function () {
             return view('student.template_laporan_studi');
-        })->middleware('student');
+        })->middleware(student::class);
     });
 });
 
@@ -67,12 +67,17 @@ Route::post('/kaprodi/update-status', [KaprodiController::class, 'updateStatus']
 
 // Routes for Staff
 Route::get('/staff/print_surat', function () {
-    return view('/staff/index');
+    return view('/staff/print_surat');
 })->middleware(staff::class);
 
-Route::get('/staff/print_surat', function () {
-    return view('/staff/print_surat');
-});
+Route::get('/staff/print_surat', [PrintController::class, 'index'])->name('staff.print_surat')->middleware(staff::class);
+Route::get('/staff/print', [PrintController::class, 'index'])->name('staff.print')->middleware(staff::class);
+Route::post('/staff/upload', [PrintController::class, 'uploadFile'])->name('staff.uploadFile')->middleware(staff::class);
+Route::delete('/staff/delete-file', [PrintController::class, 'deleteFile'])->name('staff.deleteFile')->middleware(staff::class);
+
+//Route::get('/staff/print_surat', function () {
+//    return view('/staff/print_surat');
+//});
 
 // Routes for Admin
 Route::get('/admin/dashboard', function () {

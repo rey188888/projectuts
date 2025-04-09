@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class DetailSurat extends Model
 {
-    // Specify the table name (optional if the table name matches the model name in lowercase with 's')
+    // Specify the table name
     protected $table = 'detail_surat';
 
-    // Specify the primary key (optional if the primary key is 'id')
+    // Specify the primary key
     protected $primaryKey = 'id_surat';
 
     // Disable timestamps if the table does not have created_at and updated_at columns
@@ -27,7 +27,7 @@ class DetailSurat extends Model
         'alamat_surat',
         'topik',
         'nama_kode_matkul',
-        'hasil_surat',
+        'hasil_surat', // Sudah ada, siap digunakan untuk menyimpan path file
     ];
 
     // Define the data types for specific columns (optional, for casting)
@@ -35,5 +35,13 @@ class DetailSurat extends Model
         'tanggal_surat' => 'date',
         'kategori_surat' => 'integer',
         'semester' => 'integer',
+        'id_surat' => 'string', // Tambahkan casting untuk id_surat karena bertipe string
+        'hasil_surat' => 'string', // Tambahkan casting untuk hasil_surat
     ];
+
+    // Define relationships
+    public function pengajuanSurat()
+    {
+        return $this->hasOne(PengajuanSurat::class, 'id_surat', 'id_surat');
+    }
 }

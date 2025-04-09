@@ -1,69 +1,93 @@
 @extends('components.layout')
 
 @section('title')
-    Home
+    Daftar Surat Disetujui
 @endsection
 
 @section('content')
-<body>
-    <div class="bg-gray-800 text-white rounded-lg p-6 mt-10 shadow-md max-w-4xl mx-auto">
-        <!-- Header Section -->
-        <div class="flex justify-between items-center mb-4">
-            <div class="flex items-center space-x-3">
-                <h3 class="text-lg font-semibold">
-                    Order ID: <a href="#" class="text-blue-400 hover:underline">#FWB1273756</a>
-                </h3>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500 text-white">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    Completed
-                </span>
+<section class="bg-white py-8 antialiased md:py-16 pl-64">
+    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+        <div class="mx-auto max-w-5xl">
+            <div class="gap-4 sm:flex sm:items-center sm:justify-between mb-6">
+                <h1 class="text-2xl font-semibold text-gray-900">Daftar Surat Disetujui</h1>
             </div>
-            <div class="flex space-x-3">
-                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                    </svg>
-                    Order again
-                </button>
-                <button class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
-                    Order details
-                </button>
+
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">ID Log</th>
+                            <th scope="col" class="px-6 py-3">ID Surat</th>
+                            <th scope="col" class="px-6 py-3">NRP</th>
+                            <th scope="col" class="px-6 py-3">Tgl Pengajuan</th>
+                            <th scope="col" class="px-6 py-3">Status</th>
+                            <th scope="col" class="px-6 py-3">File Surat</th>
+                            <th scope="col" class="px-6 py-3">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($pengajuanSurat as $item)
+                            <tr class="bg-white border-b hover:bg-gray-50">
+                                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                    <a href="#" class="hover:underline">{{ $item->id_log }}</a>
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $item->id_surat }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $item->nrp }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $item->tanggal_perubahan }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-block rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
+                                        Disetujui
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    @if ($item->surat && $item->surat->hasil_surat)
+                                        <a href="{{ Storage::url($item->surat->hasil_surat) }}" class="text-blue-600 hover:underline" target="_blank">Lihat File</a>
+                                    @else
+                                        <span class="text-gray-500">Belum diupload</span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4">
+                                    @if ($item->surat && $item->surat->hasil_surat)
+                                        <form action="{{ route('staff.deleteFile') }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus file ini?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="id_log" value="{{ $item->id_log }}">
+                                            <button type="submit" class="rounded-lg border border-red-700 px-3 py-2 text-sm font-medium text-red-700 hover:bg-red-700 hover:text-white focus:outline-none">
+                                                Delete File
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('staff.uploadFile') }}" method="POST" enctype="multipart/form-data" class="flex items-center gap-2">
+                                            @csrf
+                                            <input type="hidden" name="id_log" value="{{ $item->id_log }}">
+                                            <label for="file-{{ $item->id_log }}" class="inline-block cursor-pointer rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">
+                                                Pilih File
+                                            </label>
+                                            <input id="file-{{ $item->id_log }}" type="file" name="file_surat" class="hidden">
+                                            <button type="submit" class="rounded-lg border border-blue-700 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none">
+                                                Upload
+                                            </button>
+                                        </form>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+                                    Tidak ada surat disetujui yang ditemukan.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
-        </div>
-    
-        <!-- Download Invoice Link -->
-        <div class="mb-4">
-            <a href="#" class="text-blue-400 hover:underline flex items-center">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                </svg>
-                Download invoice
-            </a>
-        </div>
-    
-        <!-- Order Details -->
-        <div class="flex flex-wrap gap-6 text-sm border-t border-gray-700 pt-4">
-            <div>
-                <span class="font-medium">Order date:</span> 01 May 2024
-            </div>
-            <div>
-                <span class="font-medium">Email:</span> name@example.com
-            </div>
-            <div>
-                <span class="font-medium">Payment method:</span> VISA
-            </div>
-        </div>
-    
-        <!-- Delivery Status -->
-        <div class="mt-4 text-sm flex items-center">
-            <svg class="w-4 h-4 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-            Delivered on Friday 04 May 2024
         </div>
     </div>
-</body>
-
-</html>
+</section>
+@endsection
