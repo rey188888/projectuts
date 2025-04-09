@@ -9,8 +9,11 @@ class StatusController extends Controller
 {
     public function index(Request $request)
     {
-        // Raw query to join pengajuansurat and detail_surat tables
-        $statusSurat = DB::select("
+        // Get the status filter from the request
+        $statusFilter = $request->query('status_filter');
+
+        // Build the raw query with optional status filter
+        $query = "
             SELECT 
                 p.id_surat,
                 p.tanggal_perubahan,
@@ -18,7 +21,15 @@ class StatusController extends Controller
                 p.status_surat
             FROM pengajuansurat p
             LEFT JOIN detail_surat d ON p.id_surat = d.id_surat
-        ");
+        ";
+
+        // Add WHERE clause if status_filter is provided and not empty
+        if ($statusFilter !== null && $statusFilter !== '') {
+            $query .= " WHERE p.status_surat = ?";
+            $statusSurat = DB::select($query, [$statusFilter]);
+        } else {
+            $statusSurat = DB::select($query);
+        }
 
         // Transform the data for display
         $statusSurat = array_map(function ($item) {

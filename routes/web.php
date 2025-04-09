@@ -31,27 +31,27 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Routes for Student
 Route::prefix('student')->name('student.')->middleware(student::class)->group(function () {
-    Route::get('/status', [StatusController::class, 'index'])->name('student.status');
-    Route::get('/status', [StatusController::class, 'index'])->name('student.status');
+    
+    Route::get('/status', [StatusController::class, 'index'])->name('status');
 
     Route::prefix('pengajuan')->name('pengajuan.')->group(function () {
-        Route::get('/', [PengajuanController::class, 'index'])->name('student.index');
+        Route::get('/', [PengajuanController::class, 'index'])->name('index');
 
         Route::get('/template_mhs_aktif', function () {
-            return view('/student/template_mhs_aktif');
-        })->middleware(student::class);
+            return view('student.template_mhs_aktif');
+        })->middleware('student');
 
         Route::get('/template_pengantar_tugasmk', function () {
-            return view('/student/template_pengantar_tugasmk');
-        })->middleware(student::class);
+            return view('student.template_pengantar_tugasmk');
+        })->middleware('student');
 
         Route::get('/template_ket_lulus', function () {
-            return view('/student/template_ket_lulus');
-        })->middleware(student::class);
+            return view('student.template_ket_lulus');
+        })->middleware('student');
 
         Route::get('/template_laporan_studi', function () {
-            return view('/student/template_laporan_studi');
-        })->middleware(student::class);
+            return view('student.template_laporan_studi');
+        })->middleware('student');
     });
 });
 

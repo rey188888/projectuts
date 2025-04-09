@@ -8,9 +8,7 @@
             <div class="mx-auto max-w-5xl">
                 <div class="gap-4 sm:flex sm:items-center sm:justify-between">
                     <h1 class="text-2xl font-semibold text-gray-900">Daftar Pengajuan Surat</h1>
-
-                    {{-- <x-sorting route="student.status" /> --}}
-
+                    <x-sorting route="student.status" />
                 </div>
                 <div class="mt-6 flow-root sm:mt-8">
                     <div class="divide-y divide-gray-200">
