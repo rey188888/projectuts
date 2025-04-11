@@ -66,10 +66,13 @@
                                         <form action="{{ route('staff.uploadFile') }}" method="POST" enctype="multipart/form-data" class="flex items-center gap-2">
                                             @csrf
                                             <input type="hidden" name="id_log" value="{{ $item->id_log }}">
-                                            <label for="file-{{ $item->id_log }}" class="inline-block cursor-pointer rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">
+                                            
+                                            <label id="label-file-{{ $item->id_log }}" for="file-{{ $item->id_log }}" class="inline-block cursor-pointer rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">
                                                 Pilih File
                                             </label>
-                                            <input id="file-{{ $item->id_log }}" type="file" name="file_surat" class="hidden">
+                                            
+                                            <input id="file-{{ $item->id_log }}" type="file" name="file_surat" class="hidden" onchange="hideLabel('{{ $item->id_log }}')">
+                                            
                                             <button type="submit" class="rounded-lg border border-blue-700 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none">
                                                 Upload
                                             </button>
@@ -90,4 +93,13 @@
         </div>
     </div>
 </section>
+
+<script>
+    function hideLabel(idLog) {
+        const label = document.getElementById('label-file-' + idLog);
+        if (label) {
+            label.style.display = 'none';
+        }
+    }
+</script>
 @endsection
