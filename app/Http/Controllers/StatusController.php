@@ -18,7 +18,8 @@ class StatusController extends Controller
                 p.id_surat,
                 p.tanggal_perubahan,
                 d.kategori_surat,
-                p.status_surat
+                p.status_surat,
+                p.keterangan_penolakan
             FROM pengajuansurat p
             LEFT JOIN detail_surat d ON p.id_surat = d.id_surat
         ";

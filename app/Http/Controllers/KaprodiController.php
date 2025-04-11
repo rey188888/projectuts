@@ -4,51 +4,45 @@ namespace App\Http\Controllers;
 
 use App\Models\PengajuanSurat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KaprodiController extends Controller
 {
     public function index(Request $request)
     {
-        // Get the status filter from the request
         $statusFilter = $request->query('status_filter');
 
-        // Build the query
-        $query = PengajuanSurat::query();
+        $query = PengajuanSurat::query()
+            ->leftJoin('detail_surat', 'pengajuansurat.id_surat', '=', 'detail_surat.id_surat')
+            ->select('pengajuansurat.*', 'detail_surat.hasil_surat');
 
-        // Apply filter if status_filter is provided and not empty
         if ($statusFilter !== null && $statusFilter !== '') {
-            $query->where('status_surat', $statusFilter);
+            $query->where('pengajuansurat.status_surat', $statusFilter);
         }
 
-        // Fetch the filtered data
-        $pengajuanSurat = $query->get();
+        $pengajuansurat = $query->get();
 
-        // Pass the data to the view
-        return view('kaprodi.index', compact('pengajuanSurat'));
+        return view('kaprodi.index', compact('pengajuansurat'));
     }
 
     public function updateStatus(Request $request)
     {
-        // Validate the incoming request
         $request->validate([
             'id_surat' => 'required|exists:pengajuansurat,id_surat',
             'status' => 'required|in:disetujui,ditolak',
         ]);
 
-        // Find the PengajuanSurat record by id_surat
         $pengajuanSurat = PengajuanSurat::where('id_surat', $request->id_surat)->firstOrFail();
 
-        // Update the status_surat based on the action
         if ($request->status === 'disetujui') {
-            $pengajuanSurat->status_surat = 1; // Set to 1 for "diterima"
+            $pengajuanSurat->status_surat = 1;
         } elseif ($request->status === 'ditolak') {
-            $pengajuanSurat->status_surat = 2; // Set to 2 for "ditolak"
+            $pengajuanSurat->status_surat = 2;
+            $pengajuanSurat->keterangan_penolakan = $request->keterangan_penolakan;
         }
 
-        // Save the updated record
         $pengajuanSurat->save();
 
-        // Redirect back with a success message
         return redirect()->back()->with('success', 'Status surat berhasil diperbarui.');
     }
 }

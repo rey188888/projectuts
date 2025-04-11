@@ -11,57 +11,67 @@
                     <x-sorting route="student.status" />
                 </div>
                 <div class="mt-6 flow-root sm:mt-8">
-                    <div class="divide-y divide-gray-200">
-                        <!-- Loop through each application -->
-                        @forelse ($statusSurat as $item)
-                            <div class="flex flex-wrap items-center gap-y-4 py-6">
-                                <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                                    <dt class="text-base font-medium text-gray-500">ID Surat:</dt>
-                                    <dd class="mt-1.5 text-base font-semibold text-gray-900">
-                                        <a href="#" class="hover:underline">{{ $item->id_surat }}</a>
-                                    </dd>
-                                </dl>
-                                <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                                    <dt class="text-base font-medium text-gray-500">Tgl Pengajuan:</dt>
-                                    <dd class="mt-1.5 text-base font-semibold text-gray-900">{{ $item->tanggal_perubahan }}
-                                    </dd>
-                                </dl>
-                                <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                                    <dt class="text-base font-medium text-gray-500">Kategori:</dt>
-                                    <dd class="mt-1.5 text-base font-semibold text-gray-900">{{ $item->kategori_surat }}
-                                    </dd>
-                                </dl>
-                                <dl class="w-1/2 sm:w-1/4 lg:w-auto lg:flex-1">
-                                    <dt class="text-base font-medium text-gray-500">Status:</dt>
-                                    <dd
-                                        class="me-2 mt-1.5 inline-flex items-center rounded px-2.5 py-0.5 text-xs font-medium
-                                        {{ $item->status_surat == 1 ? 'bg-green-100 text-green-800' : ($item->status_surat == 2 ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
-                                        <svg class="me-1 h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                            width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="{{ $item->status_surat == 1 ? 'M5 11.917 9.724 16.5 19 7.5' : ($item->status_surat == 2 ? 'M6 18L18 6M6 6l12 12' : 'M12 12v4m0 0h.01M12 8v.01') }}" />
-                                        </svg>
-                                        {{ $item->status_surat_text }}
-                                    </dd>
-                                </dl>
-                                {{-- <div
-                                    class="w-full grid sm:grid-cols-2 lg:flex lg:w-64 lg:items-center lg:justify-end gap-4">
-                                    <button type="button"
-                                        class="w-full rounded-lg border border-red-700 px-3 py-2 text-center text-sm font-medium text-red-700 hover:bg-red-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300">
-                                        Cancel order
-                                    </button>
-                                    <a href="#"
-                                        class="w-full inline-flex justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100">
-                                        View details
-                                    </a>
-                                </div> --}}
-                            </div>
-                        @empty
-                            <p class="text-gray-500">No applications found.</p>
-                        @endforelse
-                    </div>
-                </div>
+                    <table class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">ID Surat</th>
+                                <th scope="col" class="px-6 py-3">Tanggal Pengajuan</th>
+                                <th scope="col" class="px-6 py-3">Kategori</th>
+                                <th scope="col" class="px-6 py-3">Status</th>
+                                <th scope="col" class="px-6 py-3">Alasan Penolakan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($statusSurat as $item)
+                                <tr class="bg-white border-b hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                        {{ $item->id_surat }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $item->tanggal_perubahan }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {{ $item->kategori_surat }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @switch($item->status_surat)
+                                            @case(0)
+                                                <span class="inline-block rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800">
+                                                    Menunggu Persetujuan
+                                                </span>
+                                                @break
+                                            @case(1)
+                                                <span class="inline-block rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
+                                                    Disetujui
+                                                </span>
+                                                @break
+                                            @case(2)
+                                                <span class="inline-block rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-800">
+                                                    Ditolak
+                                                </span>
+                                                @break
+                                        @endswitch
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if ($item->status_surat == 2 && !empty($item->keterangan_penolakan))
+                                            {{ $item->keterangan_penolakan }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr class="bg-white border-b hover:bg-gray-50">
+                                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                                        No applications found.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div> <!-- penutup div .flow-root -->
+
+                <!-- PAGINATION dipindah ke luar dari flow-root -->
                 <nav class="mt-6 flex items-center justify-center sm:mt-8" aria-label="Page navigation example">
                     <ul class="flex h-8 items-center -space-x-px text-sm">
                         <li>
@@ -108,6 +118,7 @@
                         </li>
                     </ul>
                 </nav>
+
             </div>
         </div>
     </section>
