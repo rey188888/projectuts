@@ -17,7 +17,6 @@
                 <div class="container mx-auto p-6">
                     <!-- Welcome Container -->
                     <div class="flex justify-between items-center mb-6 bg-white p-4 rounded-lg shadow-md">
-                        <h1 class="text-2xl font-bold text-gray-800">Welcome, {{ auth()->user()->role }}!</h1>
                         <!-- Logout button removed from here -->
                     </div>
 
@@ -82,5 +81,4 @@
             </div>
         </div>
     </body>
-
-    </html>
+</html>

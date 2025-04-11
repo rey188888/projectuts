@@ -10,20 +10,27 @@
             @if (Auth::user()->role === 'kaprodi')
                 <!-- Daftar Surat (Collapsible Menu) -->
                 <li>
-                    <button type="button"
-                        class="flex items-center w-full p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                        aria-controls="daftar-surat-dropdown" data-collapse-toggle="daftar-surat-dropdown">
+                    <a href="/kaprodi/dashboard"
+                        class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg aria-hidden="true"
                             class="w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 4h12v12H4V4zm2 2v8h8V6H6z"></path>
+                            <path d="M2 2a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2V4a2 2 0 00-2-2H2zm0 8a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2v-4a2 2 0 00-2-2H2zm8-8a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2V4a2 2 0 00-2-2h-4zm0 8a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2v-4a2 2 0 00-2-2h-4z"></path>
                         </svg>
-                        <span class="flex-1 ml-3 text-left whitespace-nowrap">Daftar Surat</span>
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        </svg>
-                    </button>
-                </li>
-
+                        <span class="ml-3">Dashboard</span>
+                    </a>
+                    </li>
+                    <li>
+                        <a href="/kaprodi/index"
+                            class="flex items-center w-full p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                            <svg aria-hidden="true"
+                                class="w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 4h12v12H4V4zm2 2v8h8V6H6z"></path>
+                            </svg>
+                            <span class="flex-1 ml-3 text-left whitespace-nowrap">Daftar Surat</span>
+                        </a>
+                    </li>
                 <!-- Role: staff -->
             @elseif (Auth::user()->role === 'staff')
                 <!-- Cetak Surat -->
@@ -43,6 +50,18 @@
 
                 <!-- Role: student -->
             @elseif (Auth::user()->role === 'student')
+                <!-- Dashboard -->
+                <li>
+                    <a href="/student/dashboard"
+                        class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg aria-hidden="true"
+                            class="w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                            fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 2a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2V4a2 2 0 00-2-2H2zm0 8a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2v-4a2 2 0 00-2-2H2zm8-8a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2V4a2 2 0 00-2-2h-4zm0 8a2 2 0 00-2 2v4a2 2 0 002 2h4a2 2 0 002-2v-4a2 2 0 00-2-2h-4z"></path>
+                        </svg>
+                        <span class="ml-3">Dashboard</span>
+                    </a>
+                </li>
                 <!-- Pengajuan Surat -->
                 <li>
                     <a href="/student/pengajuan"

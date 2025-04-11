@@ -110,7 +110,7 @@
 </section>
 
 <!-- Modal Tolak -->
-<div id="modalTolak" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+<div id="modalTolak" class="border fixed inset-0 z-50 hidden items-center justify-center ">
     <div class="bg-white p-6 rounded-lg w-full max-w-md">
         <h2 class="text-xl font-semibold mb-4">Alasan Penolakan</h2>
         <form id="formTolak" method="POST" action="{{ route('kaprodi.updateStatus') }}">

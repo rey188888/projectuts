@@ -10,6 +10,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KaprodiController;
 use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\DashboardKaprodiController;
 use App\Http\Middleware\admin;
 use App\Http\Middleware\student;
 use App\Http\Middleware\staff;
@@ -30,12 +33,20 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Routes for Student
+
+Route::get('/student/dashboard', [StudentController::class, 'dashboard'])->name('student.dashboard')->middleware(student::class);
+Route::get('/student/pengajuan', [StudentController::class, 'pengajuan'])->name('student.pengajuan')->middleware(student::class);
+Route::get('/student/status', [StudentController::class, 'status'])->name('student.status')->middleware(student::class);
+
+
+
 Route::prefix('student')->name('student.')->middleware(student::class)->group(function () {
     
     Route::get('/status', [StatusController::class, 'index'])->name('status');
 
     Route::prefix('pengajuan')->name('pengajuan.')->group(function () {
         Route::get('/', [PengajuanController::class, 'index'])->name('index');
+        
 
         Route::get('/template_mhs_aktif', function () {
             return view('student.template_mhs_aktif');
@@ -52,6 +63,7 @@ Route::prefix('student')->name('student.')->middleware(student::class)->group(fu
         Route::get('/template_laporan_studi', function () {
             return view('student.template_laporan_studi');
         })->middleware(student::class);
+        
     });
 });
 
@@ -62,8 +74,12 @@ Route::post('/surat/store/template_laporan_studi', [LaporanStudiController::clas
 
 // Routes for Kaprodi
 // Route::get('/kaprodi/daftarsurat', [KaprodiController::class, 'index'])->middleware(kaprodi::class);
+Route::get('/kaprodi/index', [KaprodiController::class, 'index'])->name('kaprodi.index')->middleware(kaprodi::class);
 Route::get('/kaprodi/daftarsurat', [KaprodiController::class, 'index'])->name('kaprodi.index')->middleware(kaprodi::class);
 Route::post('/kaprodi/update-status', [KaprodiController::class, 'updateStatus'])->name('kaprodi.updateStatus');
+Route::get('/kaprodi/dashboard', [DashboardKaprodiController::class, 'dashboard'])->name('kaprodi.dashboard')->middleware(kaprodi::class);
+
+
 
 // Routes for Staff
 Route::get('/staff/print_surat', function () {
@@ -83,6 +99,23 @@ Route::delete('/staff/delete-file', [PrintController::class, 'deleteFile'])->nam
 Route::get('/admin/dashboard', function () {
     return view('/admin/index');
 })->middleware(admin::class);
+
+Route::get('/admin/add-student', [AdminController::class, 'addStudentForm'])->name('admin.add-student')->middleware(admin::class);
+Route::get('/admin/add-kaprodi', [AdminController::class, 'addKaprodiForm'])->name('admin.add-kaprodi')->middleware(admin::class);
+Route::get('/admin/add-staff', [AdminController::class, 'addStaffForm'])->name('admin.add-staff')->middleware(admin::class);
+
+// Rute untuk menampilkan form
+Route::get('/admin/add-student', [AdminController::class, 'addStudentForm'])->name('admin.add-student')->middleware(admin::class);
+Route::get('/admin/add-kaprodi', [AdminController::class, 'addKaprodiForm'])->name('admin.add-kaprodi')->middleware(admin::class);
+Route::get('/admin/add-staff', [AdminController::class, 'addStaffForm'])->name('admin.add-staff')->middleware(admin::class);
+
+// Rute untuk menyimpan data
+Route::post('/admin/store-student', [AdminController::class, 'storeStudent'])->name('admin.store-student');
+Route::post('/admin/store-kaprodi', [AdminController::class, 'storeKaprodi'])->name('admin.store-kaprodi');
+Route::post('/admin/store-staff', [AdminController::class, 'storeStaff'])->name('admin.store-staff');
+
+// Rute untuk halaman utama admin
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.home');
 
 // Commented Routes (kept as-is for reference)
 // Route::prefix('staff')->middleware([staff::class])->group(function () {
