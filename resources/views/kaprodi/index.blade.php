@@ -28,6 +28,7 @@
                             <th scope="col" class="px-6 py-3">NRP</th>
                             <th scope="col" class="px-6 py-3">Tanggal Pengajuan</th>
                             <th scope="col" class="px-6 py-3">Status</th>
+                            <th scope="col" class="px-6 py-3">Data Surat</th>
                             <th scope="col" class="px-6 py-3">Aksi</th>
                             <th scope="col" class="px-6 py-3">File Surat</th>
                         </tr>
@@ -68,6 +69,19 @@
                                     @endswitch
                                 </td>
                                 <td class="px-6 py-4">
+                                    <button onclick='bukaModalDetail({
+                                        kategori_surat: {{ $item->kategori_surat }},
+                                        semester: @json($item->semester),
+                                        tujuan_surat: @json($item->tujuan_surat),
+                                        alamat_surat: @json($item->alamat_surat),
+                                        topik: @json($item->topik),
+                                        nama_kode_matkul: @json($item->nama_kode_matkul)
+                                    })'
+                                    class="rounded-lg border border-blue-700 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                        Lihat Data Surat
+                                    </button>
+                                </td>
+                                <td class="px-6 py-4">
                                     @if ($item->status_surat == 0)
                                         <div class="flex space-x-2">
                                             <form action="{{ route('kaprodi.updateStatus') }}" method="post">
@@ -96,7 +110,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                <td colspan="7" class="px-6 py-4 text-center text-gray-500">
                                     Tidak ada data pengajuan.
                                 </td>
                             </tr>
@@ -110,7 +124,7 @@
 </section>
 
 <!-- Modal Tolak -->
-<div id="modalTolak" class="border fixed inset-0 z-50 hidden items-center justify-center ">
+<div id="modalTolak" class="border fixed inset-0 z-50 hidden items-center justify-center">
     <div class="bg-white p-6 rounded-lg w-full max-w-md">
         <h2 class="text-xl font-semibold mb-4">Alasan Penolakan</h2>
         <form id="formTolak" method="POST" action="{{ route('kaprodi.updateStatus') }}">
@@ -126,17 +140,53 @@
     </div>
 </div>
 
+<!-- Modal Detail Surat -->
+<div id="modalDetailSurat" class="fixed inset-0 z-50 hidden items-center justify-center ">
+    <div class="bg-white p-6 rounded-lg w-full max-w-xl overflow-auto max-h-[80vh]">
+        <h2 class="text-xl font-semibold mb-4">Detail Surat</h2>
+        <div id="isiDetailSurat" class="text-gray-700 space-y-2">
+            <!-- Akan diisi lewat JS -->
+        </div>
+        <div class="mt-4 text-right">
+            <button onclick="tutupModalDetail()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Tutup</button>
+        </div>
+    </div>
+</div>
+
 <script>
-    function bukaModal(idSurat) {
-        document.getElementById('modal-id-surat').value = idSurat;
-        document.getElementById('modalTolak').classList.remove('hidden');
-        document.getElementById('modalTolak').classList.add('flex');
+    function bukaModalDetail(item) {
+        let isi = '';
+
+        switch (item.kategori_surat) {
+            case 1: // SKMA
+                isi += `<p><strong>Semester:</strong> ${item.semester || '-'}</p>`;
+                isi += `<p><strong>Tujuan Surat:</strong> ${item.tujuan_surat || '-'}</p>`;
+                break;
+
+            case 2: // SPTMK
+                isi += `<p><strong>Semester:</strong> ${item.semester || '-'}</p>`;
+                isi += `<p><strong>Tujuan Surat:</strong> ${item.tujuan_surat || '-'}</p>`;
+                isi += `<p><strong>Alamat Surat:</strong> ${item.alamat_surat || '-'}</p>`;
+                isi += `<p><strong>Topik:</strong> ${item.topik || '-'}</p>`;
+                isi += `<p><strong>Nama Kode Matkul:</strong> ${item.nama_kode_matkul || '-'}</p>`;
+                break;
+
+            case 4: // SLHS
+                isi += `<p><strong>Tujuan Surat:</strong> ${item.tujuan_surat || '-'}</p>`;
+                break;
+
+            default:
+                isi = `<p>Data surat tidak dikenali atau belum lengkap.</p>`;
+        }
+
+        document.getElementById('isiDetailSurat').innerHTML = isi;
+        document.getElementById('modalDetailSurat').classList.remove('hidden');
+        document.getElementById('modalDetailSurat').classList.add('flex');
     }
 
-    function tutupModal() {
-        document.getElementById('modalTolak').classList.add('hidden');
-        document.getElementById('modalTolak').classList.remove('flex');
+    function tutupModalDetail() {
+        document.getElementById('modalDetailSurat').classList.add('hidden');
+        document.getElementById('modalDetailSurat').classList.remove('flex');
     }
 </script>
 
-@endsection

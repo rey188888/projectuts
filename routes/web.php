@@ -78,6 +78,7 @@ Route::get('/kaprodi/index', [KaprodiController::class, 'index'])->name('kaprodi
 Route::get('/kaprodi/daftarsurat', [KaprodiController::class, 'index'])->name('kaprodi.index')->middleware(kaprodi::class);
 Route::post('/kaprodi/update-status', [KaprodiController::class, 'updateStatus'])->name('kaprodi.updateStatus');
 Route::get('/kaprodi/dashboard', [DashboardKaprodiController::class, 'dashboard'])->name('kaprodi.dashboard')->middleware(kaprodi::class);
+Route::get('/kaprodi/surat/{id}', [KaprodiController::class, 'show'])->name('kaprodi.detailSurat');
 
 
 
@@ -99,10 +100,6 @@ Route::delete('/staff/delete-file', [PrintController::class, 'deleteFile'])->nam
 Route::get('/admin/dashboard', function () {
     return view('/admin/index');
 })->middleware(admin::class);
-
-Route::get('/admin/add-student', [AdminController::class, 'addStudentForm'])->name('admin.add-student')->middleware(admin::class);
-Route::get('/admin/add-kaprodi', [AdminController::class, 'addKaprodiForm'])->name('admin.add-kaprodi')->middleware(admin::class);
-Route::get('/admin/add-staff', [AdminController::class, 'addStaffForm'])->name('admin.add-staff')->middleware(admin::class);
 
 // Rute untuk menampilkan form
 Route::get('/admin/add-student', [AdminController::class, 'addStudentForm'])->name('admin.add-student')->middleware(admin::class);

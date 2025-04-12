@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\PengajuanSurat;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class KaprodiController extends Controller
 {
@@ -14,7 +13,19 @@ class KaprodiController extends Controller
 
         $query = PengajuanSurat::query()
             ->leftJoin('detail_surat', 'pengajuansurat.id_surat', '=', 'detail_surat.id_surat')
-            ->select('pengajuansurat.*', 'detail_surat.hasil_surat');
+            ->select(
+                'pengajuansurat.*',
+                'detail_surat.hasil_surat',
+                'detail_surat.tujuan_surat',
+                'detail_surat.alamat_mhs',
+                'detail_surat.alamat_surat',
+                'detail_surat.topik',
+                'detail_surat.nama_kode_matkul',
+                'detail_surat.semester',
+                'detail_surat.nama',
+                'detail_surat.kategori_surat',
+                'detail_surat.tanggal_surat'
+            );
 
         if ($statusFilter !== null && $statusFilter !== '') {
             $query->where('pengajuansurat.status_surat', $statusFilter);
