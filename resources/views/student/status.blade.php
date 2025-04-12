@@ -19,55 +19,63 @@
                                 <th scope="col" class="px-6 py-3">Kategori</th>
                                 <th scope="col" class="px-6 py-3">Status</th>
                                 <th scope="col" class="px-6 py-3">Alasan Penolakan</th>
+                                <th scope="col" class="px-6 py-3">File Surat</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($statusSurat as $item)
-                                <tr class="bg-white border-b hover:bg-gray-50">
-                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                        {{ $item->id_surat }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {{ $item->tanggal_perubahan }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {{ $item->kategori_surat }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        @switch($item->status_surat)
-                                            @case(0)
-                                                <span class="inline-block rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800">
-                                                    Menunggu Persetujuan
-                                                </span>
-                                                @break
-                                            @case(1)
-                                                <span class="inline-block rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
-                                                    Disetujui
-                                                </span>
-                                                @break
-                                            @case(2)
-                                                <span class="inline-block rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-800">
-                                                    Ditolak
-                                                </span>
-                                                @break
-                                        @endswitch
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        @if ($item->status_surat == 2 && !empty($item->keterangan_penolakan))
-                                            {{ $item->keterangan_penolakan }}
-                                        @else
-                                            -
-                                        @endif
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr class="bg-white border-b hover:bg-gray-50">
-                                    <td colspan="5" class="px-6 py-4 text-center text-gray-500">
-                                        No applications found.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
+    @forelse ($statusSurat as $item)
+        <tr class="bg-white border-b hover:bg-gray-50">
+            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                {{ $item->id_surat }}
+            </td>
+            <td class="px-6 py-4">
+                {{ $item->tanggal_perubahan }}
+            </td>
+            <td class="px-6 py-4">
+                {{ $item->kategori_surat }}
+            </td>
+            <td class="px-6 py-4">
+                @switch($item->status_surat)
+                    @case(0)
+                        <span class="inline-block rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800">
+                            Menunggu Persetujuan
+                        </span>
+                        @break
+                    @case(1)
+                        <span class="inline-block rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
+                            Disetujui
+                        </span>
+                        @break
+                    @case(2)
+                        <span class="inline-block rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-800">
+                            Ditolak
+                        </span>
+                        @break
+                @endswitch
+            </td>
+            <td class="px-6 py-4">
+                @if ($item->status_surat == 2 && !empty($item->keterangan_penolakan))
+                    {{ $item->keterangan_penolakan }}
+                @else
+                    -
+                @endif
+            </td>
+            <td class="px-6 py-4">
+                @if ($item->hasil_surat)
+                    <a href="{{ asset('storage/' . $item->hasil_surat) }}" target="_blank" class="text-blue-600 hover:underline">Lihat File</a>
+                @else
+                    <span class="text-gray-400 text-sm italic">Belum Ada File</span>
+                @endif
+            </td>
+        </tr>
+    @empty
+        <tr class="bg-white border-b hover:bg-gray-50">
+            <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                No applications found.
+            </td>
+        </tr>
+    @endforelse
+</tbody>
                     </table>
                 </div> <!-- penutup div .flow-root -->
 

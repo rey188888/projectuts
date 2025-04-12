@@ -97,8 +97,8 @@
                                             </button>
                                         </div>
                                     @else
-                                        <span class="text-gray-400 text-sm italic">Sudah Diproses</span>
-                                    @endif
+                                    <span class="text-gray-400 text-sm italic">Sudah Diproses</span>
+                                @endif
                                 </td>
                                 <td class="px-6 py-4">
                                     @if ($item->hasil_surat)
@@ -124,8 +124,8 @@
 </section>
 
 <!-- Modal Tolak -->
-<div id="modalTolak" class="border fixed inset-0 z-50 hidden items-center justify-center">
-    <div class="bg-white p-6 rounded-lg w-full max-w-md">
+<div id="modalTolak" class="fixed inset-0 z-50 hidden flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg w-full max-w-xl overflow-auto max-h-[80vh] border border-gray-300">
         <h2 class="text-xl font-semibold mb-4">Alasan Penolakan</h2>
         <form id="formTolak" method="POST" action="{{ route('kaprodi.updateStatus') }}">
             @csrf
@@ -141,8 +141,8 @@
 </div>
 
 <!-- Modal Detail Surat -->
-<div id="modalDetailSurat" class="fixed inset-0 z-50 hidden items-center justify-center ">
-    <div class="bg-white p-6 rounded-lg w-full max-w-xl overflow-auto max-h-[80vh]">
+<div id="modalDetailSurat" class="fixed inset-0 z-50 hidden items-center justify-center">
+    <div class="bg-white p-6 rounded-lg w-full max-w-md border border-gray-300">
         <h2 class="text-xl font-semibold mb-4">Detail Surat</h2>
         <div id="isiDetailSurat" class="text-gray-700 space-y-2">
             <!-- Akan diisi lewat JS -->
@@ -158,23 +158,20 @@
         let isi = '';
 
         switch (item.kategori_surat) {
-            case 1: // SKMA
+            case 1:
                 isi += `<p><strong>Semester:</strong> ${item.semester || '-'}</p>`;
                 isi += `<p><strong>Tujuan Surat:</strong> ${item.tujuan_surat || '-'}</p>`;
                 break;
-
-            case 2: // SPTMK
+            case 2:
                 isi += `<p><strong>Semester:</strong> ${item.semester || '-'}</p>`;
                 isi += `<p><strong>Tujuan Surat:</strong> ${item.tujuan_surat || '-'}</p>`;
                 isi += `<p><strong>Alamat Surat:</strong> ${item.alamat_surat || '-'}</p>`;
                 isi += `<p><strong>Topik:</strong> ${item.topik || '-'}</p>`;
                 isi += `<p><strong>Nama Kode Matkul:</strong> ${item.nama_kode_matkul || '-'}</p>`;
                 break;
-
-            case 4: // SLHS
+            case 4:
                 isi += `<p><strong>Tujuan Surat:</strong> ${item.tujuan_surat || '-'}</p>`;
                 break;
-
             default:
                 isi = `<p>Data surat tidak dikenali atau belum lengkap.</p>`;
         }
@@ -188,5 +185,18 @@
         document.getElementById('modalDetailSurat').classList.add('hidden');
         document.getElementById('modalDetailSurat').classList.remove('flex');
     }
-</script>
 
+    function bukaModal(idSurat) {
+        document.getElementById('modal-id-surat').value = idSurat;
+        const modal = document.getElementById('modalTolak');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function tutupModal() {
+        const modal = document.getElementById('modalTolak');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+</script>
+@endsection

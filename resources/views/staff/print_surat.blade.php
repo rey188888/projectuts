@@ -110,7 +110,7 @@
 
 <!-- Modal Detail Surat -->
 <div id="modalDetailSurat" class="fixed inset-0 z-50 hidden items-center justify-center ">
-    <div class="bg-white p-6 rounded-lg w-full max-w-xl overflow-auto max-h-[80vh]">
+    <div class="bg-white p-6 rounded-lg w-full max-w-xl overflow-auto max-h-[80vh] border border-gray-300">
         <h2 class="text-xl font-semibold mb-4">Detail Surat</h2>
         <div id="isiDetailSurat" class="text-gray-700 space-y-2">
             <!-- Diisi via JS -->

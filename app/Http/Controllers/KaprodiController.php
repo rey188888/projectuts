@@ -39,20 +39,22 @@ class KaprodiController extends Controller
     public function updateStatus(Request $request)
     {
         $request->validate([
-            'id_surat' => 'required|exists:pengajuansurat,id_surat',
+            'id_surat' => 'required|string',
             'status' => 'required|in:disetujui,ditolak',
         ]);
 
-        $pengajuanSurat = PengajuanSurat::where('id_surat', $request->id_surat)->firstOrFail();
+        $surat = PengajuanSurat::where('id_surat', $request->id_surat)->firstOrFail();
 
         if ($request->status === 'disetujui') {
-            $pengajuanSurat->status_surat = 1;
+            $surat->status_surat = 1;
+            $surat->keterangan_penolakan = null;
         } elseif ($request->status === 'ditolak') {
-            $pengajuanSurat->status_surat = 2;
-            $pengajuanSurat->keterangan_penolakan = $request->keterangan_penolakan;
+            $surat->status_surat = 2;
+            $surat->keterangan_penolakan = $request->keterangan_penolakan;
         }
 
-        $pengajuanSurat->save();
+        $surat->tanggal_perubahan = now();
+        $surat->save();
 
         return redirect()->back()->with('success', 'Status surat berhasil diperbarui.');
     }
