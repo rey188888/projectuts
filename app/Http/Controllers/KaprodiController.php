@@ -13,6 +13,7 @@ class KaprodiController extends Controller
 
         $query = PengajuanSurat::query()
             ->leftJoin('detail_surat', 'pengajuansurat.id_surat', '=', 'detail_surat.id_surat')
+            ->leftJoin('mahasiswa', 'pengajuansurat.nrp', '=', 'mahasiswa.nrp')
             ->select(
                 'pengajuansurat.*',
                 'detail_surat.hasil_surat',
@@ -24,7 +25,8 @@ class KaprodiController extends Controller
                 'detail_surat.semester',
                 'detail_surat.nama',
                 'detail_surat.kategori_surat',
-                'detail_surat.tanggal_surat'
+                'detail_surat.tanggal_surat',
+                'mahasiswa.tanggal_kelulusan'
             );
 
         if ($statusFilter !== null && $statusFilter !== '') {

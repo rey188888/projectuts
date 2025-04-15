@@ -13,6 +13,7 @@ class PrintController extends Controller
         // Ambil semua pengajuan surat dengan status_surat = 1, join dengan detail_surat
         $pengajuanSurat = PengajuanSurat::query()
             ->leftJoin('detail_surat', 'pengajuansurat.id_surat', '=', 'detail_surat.id_surat')
+            ->leftJoin('mahasiswa', 'pengajuansurat.nrp', '=', 'mahasiswa.nrp')
             ->select(
                 'pengajuansurat.*',
                 'detail_surat.hasil_surat',
@@ -24,7 +25,8 @@ class PrintController extends Controller
                 'detail_surat.semester',
                 'detail_surat.nama',
                 'detail_surat.kategori_surat',
-                'detail_surat.tanggal_surat'
+                'detail_surat.tanggal_surat',
+                'mahasiswa.tanggal_kelulusan'
             )
             ->where('pengajuansurat.status_surat', 1)
             ->get();

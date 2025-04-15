@@ -48,7 +48,8 @@
                                         tujuan_surat: @json($item->tujuan_surat),
                                         alamat_surat: @json($item->alamat_surat),
                                         topik: @json($item->topik),
-                                        nama_kode_matkul: @json($item->nama_kode_matkul)
+                                        nama_kode_matkul: @json($item->nama_kode_matkul),
+                                        tanggal_kelulusan: @json($item->tanggal_kelulusan)
                                     })'
                                     class="rounded-lg border border-blue-700 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300">
                                         Lihat Data Surat
@@ -145,7 +146,9 @@
                 isi += `<p><strong>Topik:</strong> ${item.topik || '-'}</p>`;
                 isi += `<p><strong>Nama Kode Matkul:</strong> ${item.nama_kode_matkul || '-'}</p>`;
                 break;
-
+            case 3: // SKL
+                isi += `<p><strong>Tanggal Kelulusan:</strong> ${item.tanggal_kelulusan|| '-'}</p>`;
+                break;
             case 4: // SLHS
                 isi += `<p><strong>Tujuan Surat:</strong> ${item.tujuan_surat || '-'}</p>`;
                 break;

@@ -6,44 +6,39 @@ use App\Models\DetailSurat;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-use App\Models\Student; // Changed from Mahasiswa to Student
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use App\Models\PengajuanSurat;
 use App\Http\Controllers\Controller;
 
 class KeteranganLulusController extends Controller
 {
     public function storeSurat3(Request $request)
     {
-        // Step 1: Validate the incoming request
+        // Validasi input tanggal
         $validated = $request->validate([
-            'graduation_date' => 'required|date_format:d/m/Y', // Ensure the date is in dd/mm/yyyy format
+            'graduation_date' => 'required|date',
         ], [
             'graduation_date.required' => 'Tanggal kelulusan wajib diisi.',
-            'graduation_date.date_format' => 'Tanggal kelulusan harus dalam format dd/mm/yyyy.',
+            'graduation_date.date' => 'Tanggal kelulusan tidak valid.',
         ]);
 
-        // Step 2: Fetch the authenticated user
+        // Ambil user & data mahasiswa
         $user = Auth::user();
-
-        // Step 3: Fetch the student's NRP and name in a single query
         $student = Mahasiswa::where('id_user', $user->id_user)
-            ->select('nrp', 'nama')
             ->first();
 
         if (!$student) {
-            return redirect()->back()->with('error', 'Pengguna tidak terdaftar sebagai student.');
+            return redirect()->back()->with('error', 'Pengguna tidak terdaftar sebagai mahasiswa.');
         }
 
-        $nrp = $student->nrp;
-        $nama = $student->nama;
-
-        // Step 4: Begin a transaction
         DB::beginTransaction();
 
         try {
-            // Step 5: Find the highest existing number for the SKL format
+            // Update tanggal kelulusan di tabel mahasiswa
+            $student->tanggal_kelulusan = $validated['graduation_date'];
+            $student->save();
+
+            // Generate nomor surat SKL
             $latestSurat = DetailSurat::where('id_surat', 'LIKE', '%/SKL')
                 ->orderByRaw('CAST(SUBSTRING_INDEX(id_surat, "/", 1) AS UNSIGNED) DESC')
                 ->first();
@@ -56,35 +51,39 @@ class KeteranganLulusController extends Controller
                 }
             }
 
-            // Step 6: Generate the next ID
             $nextNumber = $highestNumber + 1;
             $formattedIdSurat = sprintf("%03d/SKL", $nextNumber);
 
-            // Step 7: Create and save the new DetailSurat record
+            // Simpan ke DetailSurat
             $detailSurat = new DetailSurat();
             $detailSurat->id_surat = $formattedIdSurat;
-            $detailSurat->nrp = $nrp;
-            $detailSurat->nama = $nama;
-            $detailSurat->semester = null; // Useless column
-            $detailSurat->alamat_mhs = null; // Useless column
-            $detailSurat->tujuan_surat = null; // Useless column
-            $date = Carbon::createFromFormat('d/m/Y', $validated['graduation_date']);
-            if (!$date) {
-                return redirect()->back()->with('error', 'Tanggal kelulusan tidak valid.');
-            }
-            $detailSurat->tanggal_surat = $date;
+            $detailSurat->nama = $student->nama;
+            $detailSurat->tanggal_surat = $validated['graduation_date'];
             $detailSurat->kategori_surat = 3;
-            $detailSurat->alamat_surat = null; // Useless column
-            $detailSurat->topik = null; // Useless column
-            $detailSurat->nama_kode_matkul = null; // Useless column
+            $detailSurat->semester = null;
+            $detailSurat->alamat_mhs = null;
+            $detailSurat->tujuan_surat = null;
+            $detailSurat->alamat_surat = null;
+            $detailSurat->topik = null;
+            $detailSurat->nama_kode_matkul = null;
             $detailSurat->save();
 
-            // Step 8: Commit the transaction
+            // Simpan ke PengajuanSurat
+            PengajuanSurat::create([
+                'status_surat' => 0,
+                'tanggal_perubahan' => now(),
+                'keterangan_penolakan' => null,
+                'nrp' => $student->nrp,
+                'id_surat' => $formattedIdSurat,
+                'id_user' => $user->id_user,
+                'id_staff' => null,
+                'id_kaprodi' => null,
+            ]);
+
             DB::commit();
 
             return redirect()->back()->with('success', 'Surat berhasil diajukan dengan nomor: ' . $formattedIdSurat);
         } catch (\Exception $e) {
-            // Step 9: Rollback the transaction if an error occurs
             DB::rollBack();
             return redirect()->back()->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
         }
