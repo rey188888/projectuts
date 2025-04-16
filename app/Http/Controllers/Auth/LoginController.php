@@ -40,13 +40,13 @@ bat    | This controller handles authenticating users for the application and
                 return redirect('/admin/dashboard');
             }
             else if (Auth::user()->role == 'student') {
-                return redirect('/student/pengajuan');
+                return redirect('/student/dashboard');
             }
             else if (Auth::user()->role == 'staff') {
                 return redirect('/staff/print_surat');
             }
             else if (Auth::user()->role == 'kaprodi') {
-                return redirect('/kaprodi/daftarsurat');
+                return redirect('/kaprodi/dashboard');
             }
         }
 

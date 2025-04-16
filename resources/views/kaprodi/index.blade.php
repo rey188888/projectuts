@@ -1,7 +1,7 @@
 @extends('components.layout')
 
 @section('title')
-    Home
+    Daftar Surat
 @endsection
 
 @section('content')
@@ -46,41 +46,28 @@
                                     {{ $item->tanggal_perubahan }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    @switch($item->status_surat)
-                                        @case(0)
-                                            <span class="inline-block rounded-full bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-800">
-                                                Menunggu Persetujuan
-                                            </span>
-                                            @break
-                                        @case(1)
-                                            <span class="inline-block rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
-                                                Disetujui
-                                            </span>
-                                            @break
-                                        @case(2)
-                                            <span class="inline-block rounded-full bg-red-100 px-2 py-1 text-xs font-medium text-red-800">
-                                                Ditolak
-                                            </span>
-                                            @break
-                                        @default
-                                            <span class="inline-block rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800">
-                                                Status Tidak Diketahui
-                                            </span>
-                                    @endswitch
+                                    <span class="inline-block rounded-full px-2 py-1 text-xs font-medium 
+                                        {{ $item->status_surat == 0 ? 'bg-yellow-100 text-yellow-800' : 
+                                           ($item->status_surat == 1 ? 'bg-green-100 text-green-800' : 
+                                           ($item->status_surat == 2 ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800')) }}">
+                                        {{ $item->status_surat == 0 ? 'Menunggu Persetujuan' : 
+                                           ($item->status_surat == 1 ? 'Disetujui' : 
+                                           ($item->status_surat == 2 ? 'Ditolak' : 'Status Tidak Diketahui')) }}
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4">
-                                <button onclick='bukaModalDetail({
-                                    kategori_surat: {{ $item->kategori_surat }},
-                                    semester: @json($item->semester),
-                                    tujuan_surat: @json($item->tujuan_surat),
-                                    alamat_surat: @json($item->alamat_surat),
-                                    topik: @json($item->topik),
-                                    nama_kode_matkul: @json($item->nama_kode_matkul),
-                                    tanggal_kelulusan: @json($item->tanggal_kelulusan)
-                                })'
-                                class="rounded-lg border border-blue-700 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300">
-                                    Lihat Data Surat
-                                </button>
+                                    <button onclick='bukaModalDetail({
+                                        kategori_surat: {{ $item->kategori_surat ?? 'null' }},
+                                        semester: @json($item->semester),
+                                        tujuan_surat: @json($item->tujuan_surat),
+                                        alamat_surat: @json($item->alamat_surat),
+                                        topik: @json($item->topik),
+                                        nama_kode_matkul: @json($item->nama_kode_matkul),
+                                        tanggal_kelulusan: @json($item->tanggal_kelulusan)
+                                    })'
+                                    class="rounded-lg border border-blue-700 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-blue-300">
+                                        Lihat Data Surat
+                                    </button>
                                 </td>
                                 <td class="px-6 py-4">
                                     @if ($item->status_surat == 0)
@@ -98,8 +85,8 @@
                                             </button>
                                         </div>
                                     @else
-                                    <span class="text-gray-400 text-sm italic">Sudah Diproses</span>
-                                @endif
+                                        <span class="text-gray-400 text-sm italic">Sudah Diproses</span>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4">
                                     @if ($item->hasil_surat)
@@ -120,6 +107,11 @@
                 </table>
             </div>
 
+                <!-- Pagination Links (Right) -->
+                <nav aria-label="Page navigation example" class="justify-end mt-4">
+                    {{ $pengajuansurat->links('vendor.pagination.tailwind') }}
+                </nav>
+            </div>
         </div>
     </div>
 </section>
@@ -155,7 +147,6 @@
 </div>
 
 <script>
-    
     function bukaModalDetail(item) {
         let isi = '';
 
@@ -172,7 +163,7 @@
                 isi += `<p><strong>Nama Kode Matkul:</strong> ${item.nama_kode_matkul || '-'}</p>`;
                 break;
             case 3:
-                isi += `<p><strong>Tanggal Kelulusan:</strong> ${item.tanggal_kelulusan|| '-'}</p>`;
+                isi += `<p><strong>Tanggal Kelulusan:</strong> ${item.tanggal_kelulusan || '-'}</p>`;
                 break;
             case 4:
                 isi += `<p><strong>Tujuan Surat:</strong> ${item.tujuan_surat || '-'}</p>`;

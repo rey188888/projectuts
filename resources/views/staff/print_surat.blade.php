@@ -1,7 +1,7 @@
 @extends('components.layout')
 
 @section('title')
-    Daftar Surat Disetujui
+    Print Surat
 @endsection
 
 @section('content')
@@ -43,7 +43,7 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <button onclick='bukaModalDetail({
-                                        kategori_surat: {{ $item->surat->kategori_surat }},
+                                        kategori_surat: {{ $item->kategori_surat ?? 'null' }},
                                         semester: @json($item->semester),
                                         tujuan_surat: @json($item->tujuan_surat),
                                         alamat_surat: @json($item->alamat_surat),
@@ -61,14 +61,14 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    @if ($item->surat && $item->surat->hasil_surat)
-                                        <a href="{{ Storage::url($item->surat->hasil_surat) }}" class="text-blue-600 hover:underline" target="_blank">Lihat File</a>
+                                    @if ($item->hasil_surat)
+                                        <a href="{{ Storage::url($item->hasil_surat) }}" class="text-blue-600 hover:underline" target="_blank">Lihat File</a>
                                     @else
                                         <span class="text-gray-500">Belum diupload</span>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4">
-                                    @if ($item->surat && $item->surat->hasil_surat)
+                                    @if ($item->hasil_surat)
                                         <form action="{{ route('staff.deleteFile') }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus file ini?');">
                                             @csrf
                                             @method('DELETE')
@@ -104,6 +104,12 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+                <!-- Pagination Links (Right) -->
+                <nav aria-label="Page navigation example" class="justify-end mt-4">
+                    {{ $pengajuanSurat->links('vendor.pagination.tailwind') }}
+                </nav>
             </div>
         </div>
     </div>

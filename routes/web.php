@@ -79,6 +79,7 @@ Route::get('/kaprodi/daftarsurat', [KaprodiController::class, 'index'])->name('k
 Route::post('/kaprodi/update-status', [KaprodiController::class, 'updateStatus'])->name('kaprodi.updateStatus');
 Route::get('/kaprodi/dashboard', [DashboardKaprodiController::class, 'dashboard'])->name('kaprodi.dashboard')->middleware(kaprodi::class);
 Route::get('/kaprodi/surat/{id}', [KaprodiController::class, 'show'])->name('kaprodi.detailSurat');
+Route::get('/kaprodi/dashboard', [KaprodiController::class, 'dashboard'])->name('kaprodi.dashboard')->middleware(kaprodi::class);
 
 
 
@@ -102,10 +103,6 @@ Route::get('/admin/dashboard', function () {
 })->middleware(admin::class);
 
 Route::get('/admin/create/mahasiswa', [AdminController::class, 'createMahasiswa'])->name('admin.create.mahasiswa');
-Route::get('/admin/create/staff', [AdminController::class, 'createStaff'])->name('admin.create.staff');
-Route::get('/admin/create/kaprodi', [AdminController::class, 'createKaprodi'])->name('admin.create.kaprodi');
-
-Route::get('/admin/create/mahasiswa', [AdminController::class, 'createMahasiswa'])->name('admin.create.mahasiswa');
 Route::post('/admin/store/mahasiswa', [AdminController::class, 'storeMahasiswa'])->name('admin.store.mahasiswa');
 
 Route::get('/admin/create/staff', [AdminController::class, 'createStaff'])->name('admin.create.staff');
@@ -126,6 +123,7 @@ Route::post('/admin/store-staff', [AdminController::class, 'storeStaff'])->name(
 
 // Rute untuk halaman utama admin
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.home');
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.index')->middleware(admin::class);
 
 // Commented Routes (kept as-is for reference)
 // Route::prefix('staff')->middleware([staff::class])->group(function () {

@@ -10,7 +10,7 @@ class PrintController extends Controller
 {
     public function index()
     {
-        // Ambil semua pengajuan surat dengan status_surat = 1, join dengan detail_surat
+        // Ambil semua pengajuan surat dengan status_surat = 1, join dengan detail_surat, dengan pagination
         $pengajuanSurat = PengajuanSurat::query()
             ->leftJoin('detail_surat', 'pengajuansurat.id_surat', '=', 'detail_surat.id_surat')
             ->leftJoin('mahasiswa', 'pengajuansurat.nrp', '=', 'mahasiswa.nrp')
@@ -29,7 +29,7 @@ class PrintController extends Controller
                 'mahasiswa.tanggal_kelulusan'
             )
             ->where('pengajuansurat.status_surat', 1)
-            ->get();
+            ->paginate(10); // Paginate with 10 records per page
 
         return view('staff.print_surat', compact('pengajuanSurat'));
     }

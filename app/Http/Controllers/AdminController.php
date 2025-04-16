@@ -142,5 +142,17 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('admin.create.kaprodi')->with('success', 'Kaprodi berhasil ditambahkan.');
-    }    
+    }
+
+
+    public function dashboard()
+    {
+        // Get counts from database
+        $mahasiswaCount = DB::table('mahasiswa')->count();
+        $staffCount = DB::table('staff')->count();
+        $kaprodiCount = DB::table('kaprodi')->count();
+
+        // Pass data to the view
+        return view('admin.index', compact('mahasiswaCount', 'staffCount', 'kaprodiCount'));
+    }
 }

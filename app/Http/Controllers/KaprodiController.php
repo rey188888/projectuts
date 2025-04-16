@@ -7,6 +7,20 @@ use Illuminate\Http\Request;
 
 class KaprodiController extends Controller
 {
+    public function dashboard()
+    {
+        // Count applications for each status
+        $pendingCount = PengajuanSurat::where('status_surat', 0)->count(); // Menunggu Persetujuan
+        $approvedCount = PengajuanSurat::where('status_surat', 1)->count(); // Disetujui
+        $rejectedCount = PengajuanSurat::where('status_surat', 2)->count(); // Ditolak
+
+        return view('kaprodi.dashboard', [
+            'pendingCount' => $pendingCount,
+            'disetujui' => $approvedCount,
+            'ditolak' => $rejectedCount,
+        ]);
+    }
+
     public function index(Request $request)
     {
         $statusFilter = $request->query('status_filter');
@@ -33,7 +47,7 @@ class KaprodiController extends Controller
             $query->where('pengajuansurat.status_surat', $statusFilter);
         }
 
-        $pengajuansurat = $query->get();
+        $pengajuansurat = $query->paginate(10);
 
         return view('kaprodi.index', compact('pengajuansurat'));
     }

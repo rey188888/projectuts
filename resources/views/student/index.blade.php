@@ -1,7 +1,6 @@
 @extends('components.layout')
-
 @section('title')
-    Home
+    Pengajuan Surat
 @endsection
 
 @section('content')

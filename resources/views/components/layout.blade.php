@@ -18,6 +18,7 @@
     @include('components.sweetalerts')
     <!-- Include Sidebar -->
     @include('components.sidebar')
+    
 
     <!-- Main Content -->
     <main class="flex-1">
