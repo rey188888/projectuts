@@ -101,6 +101,19 @@ Route::get('/admin/dashboard', function () {
     return view('/admin/index');
 })->middleware(admin::class);
 
+Route::get('/admin/create/mahasiswa', [AdminController::class, 'createMahasiswa'])->name('admin.create.mahasiswa');
+Route::get('/admin/create/staff', [AdminController::class, 'createStaff'])->name('admin.create.staff');
+Route::get('/admin/create/kaprodi', [AdminController::class, 'createKaprodi'])->name('admin.create.kaprodi');
+
+Route::get('/admin/create/mahasiswa', [AdminController::class, 'createMahasiswa'])->name('admin.create.mahasiswa');
+Route::post('/admin/store/mahasiswa', [AdminController::class, 'storeMahasiswa'])->name('admin.store.mahasiswa');
+
+Route::get('/admin/create/staff', [AdminController::class, 'createStaff'])->name('admin.create.staff');
+Route::post('/admin/store/staff', [AdminController::class, 'storeStaff'])->name('admin.store.staff');
+
+Route::get('/admin/create/kaprodi', [AdminController::class, 'createKaprodi'])->name('admin.create.kaprodi');
+Route::post('/admin/store/kaprodi', [AdminController::class, 'storeKaprodi'])->name('admin.store.kaprodi');
+
 // Rute untuk menampilkan form
 Route::get('/admin/add-student', [AdminController::class, 'addStudentForm'])->name('admin.add-student')->middleware(admin::class);
 Route::get('/admin/add-kaprodi', [AdminController::class, 'addKaprodiForm'])->name('admin.add-kaprodi')->middleware(admin::class);
